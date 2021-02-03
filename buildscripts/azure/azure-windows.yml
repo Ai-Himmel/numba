@@ -64,3 +64,12 @@ jobs:
         call activate %CONDA_ENV%
         python runtests.py -m 2 -b -j "%TEST_START_INDEX%,None,%TEST_COUNT%"  --exclude-tags='long_running'  -- numba.tests
       displayName: 'Test slice of test files'
+      
+    - task: CopyFiles@2
+      inputs:
+        contents: 'dist/**'
+        targetFolder: $(Build.ArtifactStagingDirectory)
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: $(Build.ArtifactStagingDirectory)
+        artifactName: MyBuildOutputs
